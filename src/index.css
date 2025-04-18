@@ -1,0 +1,23 @@
+* {
+    box-sizing: border-box;
+}
+
+.container {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.login__block {
+    margin-top: 200px;
+    width: 450px;
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+
+}
+
+.login__title {
+    font-weight: 500;
+    font-size: 32px;
+}
