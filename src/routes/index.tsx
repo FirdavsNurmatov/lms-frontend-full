@@ -1,30 +1,43 @@
 import RoleChecker from "../components/RoleChecker";
-import Login from "../pages/auth/login";
 import Dashboard from "../pages/dashboard";
-interface RouteT {
-  path: string;
-  element: React.ReactNode;
-  children?: ChildrenT[];
+import Groups from "../pages/groups";
+import Profile from "../pages/profile";
+
+export enum Roles {
+  ADMIN = "ADMIN",
+  TEACHER = "TEACHER",
+  STUDENT = "STUDENT",
 }
-interface ChildrenT {
+
+interface RouteT {
   index?: boolean;
-  path?: string;
+  path: string;
   element: React.ReactNode;
 }
 export const routes: RouteT[] = [
   {
-    path: "/login",
-    element: <Login />,
+    index: true,
+    path: "dashboard",
+    element: (
+      <RoleChecker roles={[Roles.ADMIN, Roles.TEACHER]}>
+        <Dashboard />
+      </RoleChecker>
+    ),
   },
   {
-    path: "/",
-    element: <RoleChecker roles={["ADMIN", "TEACHER"]} />,
-    children: [
-      {
-        index: true,
-        element: <Dashboard />,
-      },
-    ],
+    path: "groups",
+    element: (
+      <RoleChecker roles={[Roles.ADMIN, Roles.TEACHER]}>
+        <Groups />
+      </RoleChecker>
+    ),
   },
-  { path: "/dashboard", element: <RoleChecker roles={["ADMIN", "TEACHER"]} /> },
+  {
+    path: "profile",
+    element: (
+      <RoleChecker roles={[Roles.ADMIN, Roles.TEACHER]}>
+        <Profile />
+      </RoleChecker>
+    ),
+  },
 ];

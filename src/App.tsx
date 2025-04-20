@@ -1,25 +1,34 @@
 import { Route, Routes } from "react-router-dom";
 import { routes } from "./routes";
+import Login from "./pages/auth/login";
+import MainLayout from "./components/main-layout";
 
 const App = () => {
   return (
     <Routes>
-      {routes.map((element, index) => {
-        return (
-          <Route key={index} path={element.path} element={element.element}>
-            {element.children?.map((item, childIndex) => {
-              return (
-                <Route
-                  key={childIndex}
-                  index={!item.path ? true : false}
-                  path={item.path}
-                  element={item.element}
-                />
-              );
-            })}
-          </Route>
-        );
-      })}
+      <Route index path="/login" element={<Login />} />
+      <Route path={"/app"} element={<MainLayout />}>
+        {routes?.map((item, index) => {
+          return (
+            <Route
+              key={index}
+              index={item?.index ? true : false}
+              path={item.path}
+              element={item.element}
+            />
+          );
+        })}
+      </Route>
+      <Route
+        path="/*"
+        element={
+          <h1>
+            NOT FOUND!
+            <br />
+            404
+          </h1>
+        }
+      />
     </Routes>
   );
 };

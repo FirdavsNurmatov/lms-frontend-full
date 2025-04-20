@@ -8,19 +8,13 @@ const Login = () => {
     username?: string;
     password?: string;
   };
-  
-  const { user, setUser, setToken, token } = useAuthStore((store) => store);
-  // const loginHandler = async () => {
-  //   const res = await instance.post("/auth/login", {
-  //     username: "johndoe",
-  //     password: "password123",
-  //   });
-  //   console.log(res);
-    
-  // };
-  
   const navigate = useNavigate();
-  
+
+  const { user, setUser, setToken, token } = useAuthStore((store) => store);
+  if (token) {
+    navigate("/dashboard", { replace: true });
+  }
+
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     const { username, password } = values;
     if (username && password) {
@@ -32,7 +26,7 @@ const Login = () => {
       console.log(res.data.data.accessToken);
       setUser(res.data.user);
       setToken(res.data.data.accessToken);
-  
+
       navigate("/dashboard", { replace: true });
     }
   };
@@ -92,12 +86,6 @@ const Login = () => {
             Kirish
           </Button>
         </Form>
-        {/* {token ? (
-        <p>{user.full_name}</p>
-        ) : (
-          <button onClick={loginHandler}>Login</button>
-          )}
-          <Link to="/dashboard">Dashboard</Link> */}
       </div>
     </div>
   );
