@@ -1,69 +1,95 @@
-import { useState } from "react";
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from "@ant-design/icons";
-import { Button, Layout, Menu, theme } from "antd";
+import { Layout, Menu } from "antd";
 import { Link, Outlet } from "react-router-dom";
+import logoSvg from "../assets/svg/logo.svg";
+import dashboardIcon from "../assets/svg/dashboardIcon.svg";
+import studentsIcon from "../assets/svg/studentsIcon.svg";
+import teachersIcon from "../assets/svg/teachersIcon.svg";
+import groupsIcon from "../assets/svg/groupsIcon.svg";
+import settingsIcon from "../assets/svg/settingsIcon.svg";
+import logoutIcon from "../assets/svg/logoutIcon.svg";
+import searchIcon from "../assets/svg/searchIcon.svg";
+import React from "react";
 
 const MainLayout = () => {
   const { Header, Sider, Content } = Layout;
 
-  const [collapsed, setCollapsed] = useState(false);
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
+  const search = (e: React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(e.target?.value);
+  };
 
   return (
     <Layout style={{ height: "100vh", width: "100vw" }}>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="demo-logo-vertical" />
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={["Dashboard"]}
-          items={[
-            {
-              key: "Dashboard",
-              icon: <UserOutlined />,
-              label: <Link to={"/app/dashboard"}>Asosiy oyna</Link>,
-            },
-            {
-              key: "2",
-              icon: <VideoCameraOutlined />,
-              label: <Link to={'/app/groups'}>Guruhlar</Link>,
-            },
-            {
-              key: "3",
-              icon: <UploadOutlined />,
-              label: <Link to={'/app/profile'}>Profile</Link>,
-            },
-          ]}
-        />
+      <Sider className="slider_menu">
+        <div className="menus">
+          <div>
+            <div className="logo">
+              <img src={logoSvg} alt="logo" />
+            </div>
+            <Menu
+              className="menu_1"
+              mode="inline"
+              defaultSelectedKeys={["dashboard"]}
+              items={[
+                {
+                  key: "dashboard",
+                  icon: <img src={dashboardIcon} alt="asosiy" />,
+                  label: <Link to={"/app/dashboard"}>Asosiy</Link>,
+                },
+                {
+                  key: "students",
+                  icon: <img src={studentsIcon} alt="o'quvchilar" />,
+                  label: <Link to={"/app/students"}>O'quvchilar</Link>,
+                },
+                {
+                  key: "teachers",
+                  icon: <img src={teachersIcon} alt="o'qituvchilar" />,
+                  label: <Link to={"/app/teachers"}>O'qituvchilar</Link>,
+                },
+                {
+                  key: "groups",
+                  icon: <img src={groupsIcon} alt="groups" />,
+                  label: <Link to={"/app/groups"}>Guruhlar</Link>,
+                },
+              ]}
+            />
+          </div>
+          <div>
+            <Menu
+              className="menu_2"
+              mode="inline"
+              items={[
+                {
+                  key: "settings",
+                  icon: <img src={settingsIcon} alt="sozlamalar" />,
+                  label: <Link to={"/app/settings"}>Sozlamalar</Link>,
+                },
+                {
+                  key: "logout",
+                  icon: <img src={logoutIcon} alt="chiqish" />,
+                  label: <Link to={"/app/logout"}>Chiqish</Link>,
+                },
+              ]}
+            />
+          </div>
+        </div>
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }}>
-          <Button
-            type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
-            style={{
-              fontSize: "16px",
-              width: 64,
-              height: 64,
-            }}
-          />
+        <Header className="header">
+          <form onChange={search}>
+            <div className="search_block">
+              <img src={searchIcon} alt="icon" />
+              <input
+                type="text"
+                className="search_input"
+                placeholder="Qidiruv tizimi..."
+              />
+            </div>
+          </form>
         </Header>
         <Content
           style={{
-            margin: "24px 16px",
             padding: 24,
-            minHeight: 280,
-            background: colorBgContainer,
-            borderRadius: borderRadiusLG,
           }}
         >
           <Outlet />

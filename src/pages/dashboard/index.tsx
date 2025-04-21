@@ -4,13 +4,6 @@ import { teacherInstance } from "../../config/axios-instance";
 import { Roles } from "../../routes";
 import { useEffect, useState } from "react";
 
-// interface DataType {
-//   key: React.Key;
-//   name: string;
-//   age: number;
-//   address: string;
-// }
-
 interface User {
   user_id: string;
   full_name: string;
@@ -41,7 +34,6 @@ const Dashboard = () => {
   }, []);
 
   const columns: TableColumnsType<User> = [
-    { title: "#", dataIndex: "index", rowScope: "row" },
     {
       title: "O'qituvchilar F.I.O",
       dataIndex: "full_name",
@@ -54,7 +46,8 @@ const Dashboard = () => {
 
   return (
     <>
-      <Divider>Asosiy bo'lim</Divider>
+    <h1>Asosiy bo'lim</h1>
+    <hr />
       <Table<User>
         columns={columns}
         rowKey={"user_id"}

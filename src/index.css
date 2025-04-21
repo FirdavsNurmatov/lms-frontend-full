@@ -10,16 +10,70 @@
     margin-right: auto;
 }
 
+.slider_menu {
+    background-color: white;
+}
+
+.menus {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.logo {
+    margin-top: 25px;
+    text-align: center;
+}
+
+.menu_1 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 18px;
+    margin-top: 30px;
+}
+
+.menu_2 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 18px;
+}
+
 .login__block {
     margin-top: 200px;
     width: 450px;
     text-align: center;
     margin-right: auto;
     margin-left: auto;
-
 }
 
 .login__title {
     font-weight: 500;
     font-size: 32px;
+    margin-bottom: 30px;
+}
+
+.header {
+    background-color: white;
+    display: flex;
+    align-items: center;
+}
+
+.search_block {
+    width: 230px;
+    padding: 6px 0 6px 10px;
+    border-radius: 4px;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    gap: 10px
+}
+
+.search_input {
+    font-size: 16px;
+    width: 180px;
+    border: none;
+    outline: none;
 }
