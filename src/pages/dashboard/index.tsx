@@ -1,55 +1,66 @@
 import { Divider, Table } from "antd";
 import type { TableColumnsType } from "antd";
-interface DataType {
-  key: React.Key;
-  name: string;
-  age: number;
-  address: string;
+import { teacherInstance } from "../../config/axios-instance";
+import { Roles } from "../../routes";
+import { useEffect, useState } from "react";
+
+// interface DataType {
+//   key: React.Key;
+//   name: string;
+//   age: number;
+//   address: string;
+// }
+
+interface User {
+  user_id: string;
+  full_name: string;
+  email: string;
+  password: string;
+  role: Roles;
 }
 
 const Dashboard = () => {
-  const columns: TableColumnsType<DataType> = [
-    {
-      title: "Name",
-      dataIndex: "name",
-    },
-    {
-      title: "Age",
-      dataIndex: "age",
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-    },
-  ];
+  const [teachers, setTeachers] = useState<User[]>([]);
 
-  const data: DataType[] = [
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const res = await teacherInstance.get("/user");
+
+        const teachers: User[] = res.data?.data.filter(
+          (user: User) => user.role === Roles.TEACHER
+        );
+
+        setTeachers(teachers);
+        console.log(teachers);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getUsers();
+  }, []);
+
+  const columns: TableColumnsType<User> = [
+    { title: "#", dataIndex: "index", rowScope: "row" },
     {
-      key: "1",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
+      title: "O'qituvchilar F.I.O",
+      dataIndex: "full_name",
     },
     {
-      key: "2",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-    },
-    {
-      key: "3",
-      name: "Joe Black",
-      age: 32,
-      address: "Sydney No. 1 Lake Park",
+      title: "Email",
+      dataIndex: "email",
     },
   ];
 
   return (
     <>
       <Divider>Asosiy bo'lim</Divider>
-      <Table<DataType> columns={columns} dataSource={data} size="middle" />
-      {/* <Divider>Small size table</Divider>
-        <Table<DataType> columns={columns} dataSource={data} size="small" /> */}
+      <Table<User>
+        columns={columns}
+        rowKey={"user_id"}
+        dataSource={teachers}
+        size="middle"
+      />
     </>
   );
 };

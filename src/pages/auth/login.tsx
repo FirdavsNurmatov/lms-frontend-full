@@ -1,7 +1,7 @@
 import { useAuthStore } from "../../store/useAuthStore";
-import { instance } from "../../config/axios-instance";
+import { adminInstance } from "../../config/axios-instance";
 import { Button, Form, FormProps, Input } from "antd";
-import { replace, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   type FieldType = {
@@ -12,18 +12,16 @@ const Login = () => {
 
   const { user, setUser, setToken, token } = useAuthStore((store) => store);
   if (token) {
-    navigate("/dashboard", { replace: true });
+    navigate("/app/dashboard", { replace: true });
   }
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     const { username, password } = values;
     if (username && password) {
-      console.log(username, password);
-      const res = await instance.post("/auth/login", {
+      const res = await adminInstance.post("/auth/login", {
         username: username,
         password: password,
       });
-      console.log(res.data.data.accessToken);
       setUser(res.data.user);
       setToken(res.data.data.accessToken);
 
