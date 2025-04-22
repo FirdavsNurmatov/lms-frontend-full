@@ -87,11 +87,7 @@ const MainLayout = () => {
             </div>
           </form>
         </Header>
-        <Content
-          style={{
-            padding: 24,
-          }}
-        >
+        <Content>
           <Outlet />
         </Content>
       </Layout>

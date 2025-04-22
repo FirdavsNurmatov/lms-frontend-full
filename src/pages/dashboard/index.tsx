@@ -1,4 +1,4 @@
-import { Divider, Table } from "antd";
+import { Table } from "antd";
 import type { TableColumnsType } from "antd";
 import { teacherInstance } from "../../config/axios-instance";
 import { Roles } from "../../routes";
@@ -25,7 +25,6 @@ const Dashboard = () => {
         );
 
         setTeachers(teachers);
-        console.log(teachers);
       } catch (error) {
         console.log(error);
       }
@@ -46,14 +45,43 @@ const Dashboard = () => {
 
   return (
     <>
-    <h1>Asosiy bo'lim</h1>
-    <hr />
-      <Table<User>
-        columns={columns}
-        rowKey={"user_id"}
-        dataSource={teachers}
-        size="middle"
-      />
+      <div className="dashboard__title">
+        <h1>Asosiy bo'lim</h1>
+      </div>
+      <div className="data_display_block">
+        <div>
+          <div className="top_block">
+            <p className="top_block__title">O'qituvhilar soni: {teachers.length} ta</p>
+          </div>
+          <Table<User>
+            columns={columns}
+            rowKey={"user_id"}
+            dataSource={teachers}
+            // size="middle"
+            pagination={{ pageSize: 3 }}
+          />
+        </div>
+        <div className="bottom_block">
+          <div className="left_block">
+            <Table<User>
+              columns={columns}
+              rowKey={"user_id"}
+              dataSource={teachers}
+              // size="middle"
+              pagination={{ pageSize: 3 }}
+            />
+          </div>
+          <div className="statistics_block">
+            <div className="statistic_top_block">
+              <p className="statistic_title">
+                Bolalarni yosh bo'yicha statistikasi
+              </p>
+              <p className="statistic_percentage">100%</p>
+            </div>
+            <div></div>
+          </div>
+        </div>
+      </div>
     </>
   );
 };
