@@ -9,9 +9,13 @@ import settingsIcon from "../assets/svg/settingsIcon.svg";
 import logoutIcon from "../assets/svg/logoutIcon.svg";
 import searchIcon from "../assets/svg/searchIcon.svg";
 import React from "react";
+import profileIcon from "../assets/svg/profileIcon.svg";
+import { useAuthStore } from "../store/useAuthStore";
 
 const MainLayout = () => {
   const { Header, Sider, Content } = Layout;
+
+  const { user } = useAuthStore((store) => store);
 
   const search = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -86,6 +90,15 @@ const MainLayout = () => {
               />
             </div>
           </form>
+          <div className="about_me">
+            {/* <div> */}
+              <img src={profileIcon} alt="profile" />
+            {/* </div> */}
+            <div className="about_me__info">
+              <p className="profile_info_1">{user.full_name}</p>
+              <p className="profile_info_2">{user.role}</p>
+            </div>
+          </div>
         </Header>
         <Content>
           <Outlet />

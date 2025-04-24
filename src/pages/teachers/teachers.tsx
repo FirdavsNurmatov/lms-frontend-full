@@ -1,99 +1,49 @@
-import { Space, Table, TableProps, Tag } from "antd";
-
-interface DataType {
-  key: string;
-  name: string;
-  age: number;
-  address: string;
-  tags: string[];
-}
+import { Table, TableColumnsType, TableProps } from "antd";
+import addIcon from "../../assets/svg/addIcon.svg";
+import { User } from "../dashboard";
+import { useEffect, useState } from "react";
+import { teacherInstance } from "../../config/axios-instance";
+import { Roles } from "../../routes";
 
 const Teachers = () => {
-  const columns: TableProps<DataType>["columns"] = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      render: (text) => <a>{text}</a>,
-    },
-    {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-    },
-    {
-      title: "Tags",
-      key: "tags",
-      dataIndex: "tags",
-      render: (_, { tags }) => (
-        <>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? "geekblue" : "green";
-            if (tag === "loser") {
-              color = "volcano";
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
-    },
-    {
-      title: "Action",
-      key: "action",
-      render: (_, record) => (
-        <Space size="middle">
-          <a>Invite {record.name}</a>
-          <a>Delete</a>
-        </Space>
-      ),
-    },
-  ];
+  const [teachers, setTeachers] = useState<User[]>([]);
 
-  const data: DataType[] = [
-    {
-      key: "1",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-    },
-    {
-      key: "2",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-    },
-    {
-      key: "3",
-      name: "Joe Black",
-      age: 32,
-      address: "Sydney No. 1 Lake Park",
-      tags: ["cool", "teacher"],
-    },
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const res = await teacherInstance.get("/user");
+
+        const teachers: User[] = res.data?.data.filter(
+          (user: User) => user.role === Roles.TEACHER
+        );
+
+        setTeachers(teachers);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getUsers();
+  }, []);
+
+  const columns: TableColumnsType<User> = [
+    { title: "O'quvchilar F.I.O", dataIndex: "full_name" },
+    { title: "Email", dataIndex: "email" },
   ];
 
   return (
     <div>
-      <div>
-        <p className="">O'qituvchilar jadvali</p>
+      <div className="teachers_block">
+        <p className="teachers_title">O'qituvchilar jadvali</p>
         <div>
-          <div>
-            <img src="" alt="qo'shish" />
-            <button>Qo'shish</button>
-          </div>
+          <button className="add_button">
+            <img src={addIcon} alt="qo'shish" />
+            <p>Qo'shish</p>
+          </button>
         </div>
       </div>
-      <Table<DataType> columns={columns} dataSource={data} />
+      <div className="teachers_table">
+        <Table<User> columns={columns} dataSource={teachers} />
+      </div>
     </div>
   );
 };
