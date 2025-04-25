@@ -55,14 +55,6 @@ const MainLayout = () => {
                   icon: <img src={groupsIcon} alt="groups" />,
                   label: <Link to={"/app/groups"}>Guruhlar</Link>,
                 },
-              ]}
-            />
-          </div>
-          <div>
-            <Menu
-              className="menu_2"
-              mode="inline"
-              items={[
                 {
                   key: "settings",
                   icon: <img src={settingsIcon} alt="sozlamalar" />,
@@ -91,9 +83,7 @@ const MainLayout = () => {
             </div>
           </form>
           <div className="about_me">
-            {/* <div> */}
-              <img src={profileIcon} alt="profile" />
-            {/* </div> */}
+            <img src={profileIcon} alt="profile" />
             <div className="about_me__info">
               <p className="profile_info_1">{user.full_name}</p>
               <p className="profile_info_2">{user.role}</p>

@@ -102,7 +102,6 @@ const  option = {
               columns={columns}
               rowKey={"user_id"}
               dataSource={teachers}
-              // size="middle"
               pagination={{ pageSize: 3 }}
             />
           </div>
@@ -114,7 +113,6 @@ const  option = {
               <p className="statistic_percentage">100%</p>
             </div>
             <div className="statistic_diagramm">
-              {/* <Pie option /> */}
               <EChartsReact option={option}/>
             </div>
           </div>

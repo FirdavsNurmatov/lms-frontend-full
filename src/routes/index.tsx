@@ -4,6 +4,7 @@ import Groups from "../pages/groups";
 import Logout from "../pages/logout/logout";
 import Profile from "../pages/profile";
 import Settings from "../pages/settings/settings";
+import CreateStudent from "../pages/students/create-student";
 import Students from "../pages/students/students";
 import Teachers from "../pages/teachers/teachers";
 
@@ -33,6 +34,14 @@ export const routes: RouteT[] = [
     element: (
       <RoleChecker roles={[Roles.ADMIN, Roles.TEACHER]}>
         <Students />
+      </RoleChecker>
+    ),
+  },
+  {
+    path: "create-student",
+    element: (
+      <RoleChecker roles={[Roles.ADMIN]}>
+        <CreateStudent />
       </RoleChecker>
     ),
   },

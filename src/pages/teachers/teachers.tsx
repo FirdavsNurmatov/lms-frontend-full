@@ -1,4 +1,4 @@
-import { Table, TableColumnsType, TableProps } from "antd";
+import { Table, TableColumnsType } from "antd";
 import addIcon from "../../assets/svg/addIcon.svg";
 import { User } from "../dashboard";
 import { useEffect, useState } from "react";
@@ -42,7 +42,7 @@ const Teachers = () => {
         </div>
       </div>
       <div className="teachers_table">
-        <Table<User> columns={columns} dataSource={teachers} />
+        <Table<User> rowKey="user_id" columns={columns} dataSource={teachers} />
       </div>
     </div>
   );

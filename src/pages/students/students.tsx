@@ -1,20 +1,22 @@
 import { Table } from "antd";
-import type { TableColumnsType, TableProps } from "antd";
+import type { TableColumnsType } from "antd";
 import addIcon from "../../assets/svg/addIcon.svg";
 import { teacherInstance } from "../../config/axios-instance";
 import { useEffect, useState } from "react";
 import { User } from "../dashboard";
 import { Roles } from "../../routes";
+import { useNavigate } from "react-router-dom";
 
-interface DataType {
-  key: string;
-  name: string;
-  age: number;
-  address: string;
-  tags: string[];
-}
+// interface DataType {
+//   key: string;
+//   name: string;
+//   age: number;
+//   address: string;
+//   tags: string[];
+// }
 
 const Students = () => {
+  const navigate = useNavigate();
   const [students, setTeachers] = useState<User[]>([]);
 
   useEffect(() => {
@@ -89,43 +91,25 @@ const Students = () => {
     // },
   ];
 
-  // const data: DataType[] = [
-  //   {
-  //     key: "1",
-  //     name: "John Brown",
-  //     age: 32,
-  //     address: "New York No. 1 Lake Park",
-  //     tags: ["nice", "developer"],
-  //   },
-  //   {
-  //     key: "2",
-  //     name: "Jim Green",
-  //     age: 42,
-  //     address: "London No. 1 Lake Park",
-  //     tags: ["loser"],
-  //   },
-  //   {
-  //     key: "3",
-  //     name: "Joe Black",
-  //     age: 32,
-  //     address: "Sydney No. 1 Lake Park",
-  //     tags: ["cool", "teacher"],
-  //   },
-  // ];
+  const navigateTo = () => {
+    console.log("ok");
+
+    return navigate("/app/create-student");
+  };
 
   return (
     <div>
       <div className="students_block">
         <p className="students_title">O'quvchilar jadvali</p>
         <div>
-          <button className="add_button">
+          <button onClick={navigateTo} className="add_button">
             <img src={addIcon} alt="qo'shish" />
             <p>Qo'shish</p>
           </button>
         </div>
       </div>
       <div className="students_table">
-        <Table<User> columns={columns} dataSource={students} />
+        <Table<User> rowKey="user_id" columns={columns} dataSource={students} />
       </div>
     </div>
   );
