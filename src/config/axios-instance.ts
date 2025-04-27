@@ -8,11 +8,13 @@ export const adminInstance = axios.create({
   // withCredentials: true,
 });
 
-adminInstance.interceptors.request.use((config) => {
+adminInstance.interceptors.request.use(async (config) => {
   if (config.url !== "/auth/refresh") {
-    const accessToken = Cookie.get("accessToken");
-    if (accessToken) {
-      config.headers["Authorization"] = `Bearer ${accessToken}`;
+    const data = await JSON.parse(localStorage.getItem("auth") || "");
+    const token = data?.state?.token;
+
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
   }
   return config;

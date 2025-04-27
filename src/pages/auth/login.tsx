@@ -10,7 +10,7 @@ const Login = () => {
   };
   const navigate = useNavigate();
 
-  const { user, setUser, setToken, token } = useAuthStore((store) => store);
+  const { setUser, setToken, token } = useAuthStore((store) => store);
   if (token) {
     navigate("/app/dashboard", { replace: true });
   }
@@ -18,14 +18,21 @@ const Login = () => {
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     const { username, password } = values;
     if (username && password) {
-      const res = await adminInstance.post("/auth/login", {
-        username: username,
-        password: password,
-      });
-      setUser(res.data.user);
-      setToken(res.data.data.accessToken);
+      try {
 
-      navigate("/dashboard", { replace: true });
+        const res = await adminInstance.post("/auth/login", {
+          username: username,
+          password: password,
+        });
+        setUser(res.data.user);
+        setToken(res.data.data.accessToken);
+
+        navigate("/dashboard", { replace: true });
+      } catch (
+      err: any
+      ) {
+        console.log(err.message);
+      }
     }
   };
 

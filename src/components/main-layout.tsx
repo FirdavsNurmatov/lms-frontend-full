@@ -1,5 +1,5 @@
 import { Layout, Menu } from "antd";
-import { Link, Outlet } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import logoSvg from "../assets/svg/logo.svg";
 import dashboardIcon from "../assets/svg/dashboardIcon.svg";
 import studentsIcon from "../assets/svg/studentsIcon.svg";
@@ -38,32 +38,32 @@ const MainLayout = () => {
                 {
                   key: "dashboard",
                   icon: <img src={dashboardIcon} alt="asosiy" />,
-                  label: <Link to={"/app/dashboard"}>Asosiy</Link>,
+                  label: <NavLink to={"/app/dashboard"}>Asosiy</NavLink>,
                 },
                 {
                   key: "students",
                   icon: <img src={studentsIcon} alt="o'quvchilar" />,
-                  label: <Link to={"/app/students"}>O'quvchilar</Link>,
+                  label: <NavLink to={"/app/students"}>O'quvchilar</NavLink>,
                 },
                 {
                   key: "teachers",
                   icon: <img src={teachersIcon} alt="o'qituvchilar" />,
-                  label: <Link to={"/app/teachers"}>O'qituvchilar</Link>,
+                  label: <NavLink to={"/app/teachers"}>O'qituvchilar</NavLink>,
                 },
                 {
                   key: "groups",
                   icon: <img src={groupsIcon} alt="groups" />,
-                  label: <Link to={"/app/groups"}>Guruhlar</Link>,
+                  label: <NavLink to={"/app/groups"}>Guruhlar</NavLink>,
                 },
                 {
                   key: "settings",
                   icon: <img src={settingsIcon} alt="sozlamalar" />,
-                  label: <Link to={"/app/settings"}>Sozlamalar</Link>,
+                  label: <NavLink to={"/app/settings"}>Sozlamalar</NavLink>,
                 },
                 {
                   key: "logout",
                   icon: <img src={logoutIcon} alt="chiqish" />,
-                  label: <Link to={"/app/logout"}>Chiqish</Link>,
+                  label: <NavLink to={"/app/logout"}>Chiqish</NavLink>,
                 },
               ]}
             />

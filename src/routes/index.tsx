@@ -6,6 +6,7 @@ import Profile from "../pages/profile";
 import Settings from "../pages/settings/settings";
 import CreateStudent from "../pages/students/create-student";
 import Students from "../pages/students/students";
+import CreateTeacher from "../pages/teachers/create-teachers";
 import Teachers from "../pages/teachers/teachers";
 
 export enum Roles {
@@ -50,6 +51,14 @@ export const routes: RouteT[] = [
     element: (
       <RoleChecker roles={[Roles.ADMIN]}>
         <Teachers />
+      </RoleChecker>
+    ),
+  },
+  {
+    path: "create-teacher",
+    element: (
+      <RoleChecker roles={[Roles.ADMIN]}>
+        <CreateTeacher />
       </RoleChecker>
     ),
   },

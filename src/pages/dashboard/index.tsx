@@ -113,7 +113,7 @@ const  option = {
               <p className="statistic_percentage">100%</p>
             </div>
             <div className="statistic_diagramm">
-              <EChartsReact option={option}/>
+              {/* <EChartsReact option={option}/> */}
             </div>
           </div>
         </div>

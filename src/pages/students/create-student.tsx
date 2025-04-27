@@ -1,4 +1,3 @@
-import { PlusOutlined } from "@ant-design/icons";
 import {
   Button,
   DatePicker,
@@ -11,6 +10,7 @@ import {
 import saveIcon from "../../assets/svg/saveIcon.svg";
 import cancelIcon from "../../assets/svg/cancelIcon.svg";
 import uploadImageIcon from "../../assets/svg/uploadImageIcon.svg";
+import { useNavigate } from "react-router-dom";
 
 type FieldType = {
   picture: File;
@@ -34,6 +34,25 @@ const CreateStudent = () => {
     return e?.fileList;
   };
 
+  // const createStudent = useEffect(() => {
+
+  // }, [])
+
+  // useEffect(() => {
+  //   const getGroups = async () => {
+  //     try {
+  //       const res = await adminInstance.get("/groups");
+
+  //       console.log(res);
+
+  //       // setState(res.data?.);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   getGroups();
+  // }, [])
+
   const onFinish: FormProps<FieldType>["onFinish"] = (data) => {
     console.log("creating", data);
   };
@@ -41,6 +60,12 @@ const CreateStudent = () => {
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (data) => {
     console.log("cancelling", data);
   };
+
+  const navigate = useNavigate()
+
+  const navigateTo = () => {
+    return navigate(-1)
+  }
 
   return (
     <>
@@ -53,12 +78,10 @@ const CreateStudent = () => {
         <div className="students_block">
           <p className="students_title">O'quvchilar jadvali</p>
           <div className="create_buttons">
-            <Form.Item>
-              <Button type="primary" htmlType="submit" className="add_button">
-                <img src={cancelIcon} alt="bekor qilish" />
-                <p>Bekor qilish</p>
-              </Button>
-            </Form.Item>
+            <Button onClick={navigateTo} className="add_button">
+              <img src={cancelIcon} alt="bekor qilish" />
+              <p>Bekor qilish</p>
+            </Button>
             <Form.Item>
               <Button type="primary" htmlType="submit" className="add_button">
                 <img src={saveIcon} alt="saqlash" />
@@ -78,7 +101,6 @@ const CreateStudent = () => {
               <Upload
                 action="/upload.do"
                 listType="picture-card"
-                className="upload_picture"
                 style={{ width: 150, height: 150 }}
               >
                 <button
@@ -91,8 +113,8 @@ const CreateStudent = () => {
                   }}
                   type="button"
                 >
-                  {/* <PlusOutlined /> */}
-                  <img src={uploadImageIcon} alt="rasm" />
+                  <img src={uploadImageIcon} alt="rasm"
+                  />
                   <div style={{ marginTop: 8 }}>Rasmni yuklang</div>
                 </button>
               </Upload>
@@ -115,7 +137,8 @@ const CreateStudent = () => {
                 </Form.Item>
                 <Form.Item name="gender" label="Jinsi:">
                   <Select>
-                    <Select.Option value="demo">Demo</Select.Option>
+                    <Select.Option value="male" >O'gil bola</Select.Option>
+                    <Select.Option value="female">Qiz bola</Select.Option>
                   </Select>
                 </Form.Item>
                 <Form.Item name="address" label="Yashash manzili:">
@@ -125,20 +148,6 @@ const CreateStudent = () => {
             </div>
           </div>
           <div className="second_row">
-            <Form.Item name="groupNumber" label="Gurux raqami">
-              <Select>
-                {/* <Select.Option value="demo">Demo</Select.Option> */}
-              </Select>
-            </Form.Item>
-            <Form.Item name="paymentType" label="To'lov">
-              <Select>
-                <Select.Option value="cash">Naqd</Select.Option>
-                <Select.Option value="cart">Karta</Select.Option>
-              </Select>
-            </Form.Item>
-            <Form.Item name="payment" label="To'lov summa">
-              <Input />
-            </Form.Item>
             <Form.Item name="phoneNumber" label="Telefon:">
               <Input />
             </Form.Item>

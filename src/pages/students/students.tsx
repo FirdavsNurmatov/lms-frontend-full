@@ -92,8 +92,6 @@ const Students = () => {
   ];
 
   const navigateTo = () => {
-    console.log("ok");
-
     return navigate("/app/create-student");
   };
 

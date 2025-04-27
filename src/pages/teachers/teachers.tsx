@@ -4,6 +4,7 @@ import { User } from "../dashboard";
 import { useEffect, useState } from "react";
 import { teacherInstance } from "../../config/axios-instance";
 import { Roles } from "../../routes";
+import { useNavigate } from "react-router-dom";
 
 const Teachers = () => {
   const [teachers, setTeachers] = useState<User[]>([]);
@@ -30,12 +31,18 @@ const Teachers = () => {
     { title: "Email", dataIndex: "email" },
   ];
 
+
+  const navigate = useNavigate()
+  const navigateTo = () => {
+    return navigate("/app/create-teacher");
+  };
+
   return (
     <div>
       <div className="teachers_block">
         <p className="teachers_title">O'qituvchilar jadvali</p>
         <div>
-          <button className="add_button">
+          <button onClick={navigateTo} className="add_button">
             <img src={addIcon} alt="qo'shish" />
             <p>Qo'shish</p>
           </button>

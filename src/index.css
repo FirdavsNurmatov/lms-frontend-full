@@ -90,11 +90,6 @@
     height: 100%;
 }
 
-/* .about_me__info{
-    display:flex;
-    line-height: 0 !important;
-} */
-
 .profile_info_1 {
     line-height: 16px;
     font-weight: 700;
@@ -129,8 +124,6 @@
 .statistics_block {
     background-color: white;
     max-height: 500px;
-    /* width: 100%;
-    text-align: center; */
 }
 
 .statistic_top_block {
@@ -184,14 +177,12 @@
     background-color: white;
     color: black;
     outline: none;
-    /* border: none; */
 }
 
 .add_button:hover {
     display: flex;
     align-items: center;
     gap: 10px;
-    /* padding: 6px 20px; */
     background-color: white !important;
     color: black !important;
 }
@@ -213,14 +204,14 @@
 .first_row {
     display: flex;
     justify-content: space-between;
-    gap: 10px;
+    gap: 50px;
 }
 
 .first_row_upper_block,
 .first_row_bottom_block {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 50px;
 }
 
 .right_inputs {
@@ -230,10 +221,10 @@
 .second_row {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    /* justify-content: space-between; */
+    gap: 50px;
 }
 
 .upload_picture {
-    padding: 20px;
+    padding: 40px !important;
+
 }
