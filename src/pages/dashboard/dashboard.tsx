@@ -47,11 +47,6 @@ const Dashboard = () => {
   ];
 
   const option = {
-    // title: {
-    // text: 'A Case of Doughnut Chart',
-    //   left: 'center',
-    //   top: 'center'
-    // },
     series: [
       {
         type: 'pie',

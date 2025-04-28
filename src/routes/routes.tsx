@@ -61,7 +61,8 @@ export const routes: RouteT[] = [
         <Groups />
       </RoleChecker>
     ),
-  }, {
+  },
+   {
     path: 'create-group', element: <RoleChecker roles={[ROLES.ADMIN]}><CreateGroup /></RoleChecker>
   },
   {

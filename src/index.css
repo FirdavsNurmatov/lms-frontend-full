@@ -258,3 +258,9 @@ button {
     outline: none;
     border: none;
 }
+
+.login_error{
+    color: red;
+    font-size: 16px;
+    font-weight: 600;
+}

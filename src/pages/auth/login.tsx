@@ -2,20 +2,25 @@ import { useAuthStore } from "../../store/useAuthStore";
 import { Button, Form, FormProps, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 import { adminInstance, LoginFieldType } from "../../config";
+import { useEffect, useState } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
-
   const { setUser, setToken, token } = useAuthStore((store) => store);
-  if (token) {
-    navigate("/app/dashboard", { replace: true });
-  }
+  useEffect(
+    () => {
+      if (token) {
+        navigate("/app/dashboard", { replace: true });
+      }
+    }, [token]
+  )
+
+  const [error, setError] = useState('')
 
   const onFinish: FormProps<LoginFieldType>["onFinish"] = async (values) => {
     const { username, password } = values;
     if (username && password) {
       try {
-
         const res = await adminInstance.post("/auth/login", {
           username: username,
           password: password,
@@ -24,18 +29,10 @@ const Login = () => {
         setToken(res.data.data.accessToken);
 
         navigate("/dashboard", { replace: true });
-      } catch (
-      err: any
-      ) {
-        console.log(err.message);
+      } catch (err) {
+        setError('Username yoki parol xato!')
       }
     }
-  };
-
-  const onFinishFailed: FormProps<LoginFieldType>["onFinishFailed"] = (
-    errorInfo
-  ) => {
-    console.log("Failed:", errorInfo);
   };
 
   return (
@@ -45,7 +42,6 @@ const Login = () => {
         <Form
           name="basic"
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           autoComplete="true"
         >
           <Form.Item
@@ -74,6 +70,7 @@ const Login = () => {
               }}
             />
           </Form.Item>
+          {error ? <p className="login_error">{error}</p> : <p></p>}
           <Button
             type="primary"
             style={{

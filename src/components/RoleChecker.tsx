@@ -10,8 +10,9 @@ const RoleChecker = ({
   children: ReactNode;
 }) => {
   const { user } = useAuthStore((store) => store);
+  
   if (!user.role) return <Navigate to="/login" />;
-  if (user.role && !roles.includes(user.role)) return <Navigate to="/login" />;
+  if (!roles.includes(user.role)) return <Navigate to="/login" />;
 
   return <>{children}</>;
 };
