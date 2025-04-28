@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+button {
+    cursor: pointer;
+}
+
 .container {
     max-width: 1200px;
     margin-left: auto;
@@ -119,17 +123,20 @@
 
 .statistic_title {
     font-size: 26px;
+    width: 250px;
 }
 
 .statistics_block {
+    padding: 24px;
     background-color: white;
     max-height: 500px;
 }
 
 .statistic_top_block {
     display: flex;
-    justify-content: space-evenly;
-    border-bottom: 1px solid inherit;
+    gap: 20px;
+    align-items: center;
+    border-bottom: 1px solid black;
 }
 
 .statistic_percentage {
@@ -151,12 +158,14 @@
 }
 
 .students_table,
-.teachers_table {
+.teachers_table,
+.groups_table {
     padding: 24px;
 }
 
 .students_block,
-.teachers_block {
+.teachers_block,
+.groups_block {
     display: flex;
     justify-content: space-between;
     padding: 24px;
@@ -164,7 +173,8 @@
 }
 
 .students_title,
-.teachers_title {
+.teachers_title,
+.groups_title {
     font-weight: 600;
     font-size: 26px;
 }
@@ -227,4 +237,24 @@
 .upload_picture {
     padding: 40px !important;
 
+}
+
+.gender_male {
+    color: green;
+}
+
+.gender_female {
+    color: red;
+}
+
+.actions_block {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.delete_btn,
+.update_btn {
+    background-color: inherit;
+    outline: none;
+    border: none;
 }

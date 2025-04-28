@@ -1,18 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-interface DataT {
-  user: UserT;
-  token: string | null;
-  setUser: (user: UserT) => void;
-  setToken: (token: string) => void;
-}
-interface UserT {
-  full_name?: string;
-  username?: string;
-  role?: string;
-  user_id?: string;
-}
+import { DataT, UserT } from "../config";
 
 export const useAuthStore = create<DataT>()(
   persist(

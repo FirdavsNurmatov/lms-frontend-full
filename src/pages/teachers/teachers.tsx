@@ -1,10 +1,11 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Table, TableColumnsType } from "antd";
 import addIcon from "../../assets/svg/addIcon.svg";
-import { User } from "../dashboard";
-import { useEffect, useState } from "react";
-import { teacherInstance } from "../../config/axios-instance";
-import { Roles } from "../../routes";
-import { useNavigate } from "react-router-dom";
+import updateIcon from '../../assets/svg/updateIcon.svg'
+import deleteIcon from '../../assets/svg/deleteIcon.svg'
+import { GENDER, ROLES } from "../../config/enums";
+import { teacherInstance, User } from "../../config";
 
 const Teachers = () => {
   const [teachers, setTeachers] = useState<User[]>([]);
@@ -15,7 +16,7 @@ const Teachers = () => {
         const res = await teacherInstance.get("/user");
 
         const teachers: User[] = res.data?.data.filter(
-          (user: User) => user.role === Roles.TEACHER
+          (user: User) => user.role === ROLES.TEACHER
         );
 
         setTeachers(teachers);
@@ -27,8 +28,37 @@ const Teachers = () => {
   }, []);
 
   const columns: TableColumnsType<User> = [
-    { title: "O'quvchilar F.I.O", dataIndex: "full_name" },
-    { title: "Email", dataIndex: "email" },
+    { title: '#', render: (_, record, index) => index + 1 }, {
+      title: "O'qituvchilar F.I.O",
+      dataIndex: "full_name",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+    },
+    { title: "Tug'ilgan sana", dataIndex: 'data_of_birth', render: (val) => val ? val.split('T')[0] : '-' },
+    {
+      title: 'Jinsi',
+      dataIndex: 'gender',
+      render: (val) => val === GENDER.MALE ? <p className="gender_male">O'gil bola</p> : val === GENDER.FEMALE ? <p className="gender_female">Qiz bola</p> : '-'
+    },
+    {
+      title: 'Kontakt',
+      dataIndex: 'phone_number',
+      render: (val) => val ? val : '-'
+    },
+    {
+      title: 'Imkoniyatlar',
+      render: (_, record, index) =>
+        <div className="actions_block">
+          <button className="update_btn" id={record?.user_id || ''}>
+            <img src={updateIcon} alt="o'zgartirish" />
+          </button>
+          <button className="delete_btn" id={record?.user_id || ''}>
+            <img src={deleteIcon} alt="o'chirish" />
+          </button>
+        </div>
+    }
   ];
 
 

@@ -11,20 +11,8 @@ import saveIcon from "../../assets/svg/saveIcon.svg";
 import cancelIcon from "../../assets/svg/cancelIcon.svg";
 import uploadImageIcon from "../../assets/svg/uploadImageIcon.svg";
 import { useNavigate } from "react-router-dom";
+import { StudentsFieldType } from "../../config";
 
-type FieldType = {
-  picture: File;
-  first_name: string;
-  second_name: string;
-  third_name: string;
-  birth_date: Date;
-  gender: string;
-  address: string;
-  groupNumber: string;
-  paymentType: "cart" | "cash";
-  payment: string;
-  phoneNumber: string;
-};
 
 const CreateStudent = () => {
   const normFile = (e: any) => {
@@ -53,11 +41,11 @@ const CreateStudent = () => {
   //   getGroups();
   // }, [])
 
-  const onFinish: FormProps<FieldType>["onFinish"] = (data) => {
+  const onFinish: FormProps<StudentsFieldType>["onFinish"] = (data) => {
     console.log("creating", data);
   };
 
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (data) => {
+  const onFinishFailed: FormProps<StudentsFieldType>["onFinishFailed"] = (data) => {
     console.log("cancelling", data);
   };
 

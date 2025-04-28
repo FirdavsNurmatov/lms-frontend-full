@@ -1,13 +1,9 @@
 import { useAuthStore } from "../../store/useAuthStore";
-import { adminInstance } from "../../config/axios-instance";
 import { Button, Form, FormProps, Input } from "antd";
 import { useNavigate } from "react-router-dom";
+import { adminInstance, LoginFieldType } from "../../config";
 
 const Login = () => {
-  type FieldType = {
-    username?: string;
-    password?: string;
-  };
   const navigate = useNavigate();
 
   const { setUser, setToken, token } = useAuthStore((store) => store);
@@ -15,7 +11,7 @@ const Login = () => {
     navigate("/app/dashboard", { replace: true });
   }
 
-  const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
+  const onFinish: FormProps<LoginFieldType>["onFinish"] = async (values) => {
     const { username, password } = values;
     if (username && password) {
       try {
@@ -36,7 +32,7 @@ const Login = () => {
     }
   };
 
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
+  const onFinishFailed: FormProps<LoginFieldType>["onFinishFailed"] = (
     errorInfo
   ) => {
     console.log("Failed:", errorInfo);

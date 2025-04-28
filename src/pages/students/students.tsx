@@ -1,19 +1,11 @@
 import { Table } from "antd";
 import type { TableColumnsType } from "antd";
 import addIcon from "../../assets/svg/addIcon.svg";
-import { teacherInstance } from "../../config/axios-instance";
 import { useEffect, useState } from "react";
-import { User } from "../dashboard";
-import { Roles } from "../../routes";
 import { useNavigate } from "react-router-dom";
-
-// interface DataType {
-//   key: string;
-//   name: string;
-//   age: number;
-//   address: string;
-//   tags: string[];
-// }
+import updateIcon from '../../assets/svg/updateIcon.svg'
+import deleteIcon from '../../assets/svg/deleteIcon.svg'
+import { GENDER, ROLES, teacherInstance, User } from "../../config";
 
 const Students = () => {
   const navigate = useNavigate();
@@ -25,7 +17,7 @@ const Students = () => {
         const res = await teacherInstance.get("/user");
 
         const students: User[] = res.data?.data.filter(
-          (user: User) => user.role === Roles.STUDENT
+          (user: User) => user.role === ROLES.STUDENT
         );
 
         setTeachers(students);
@@ -37,58 +29,37 @@ const Students = () => {
   }, []);
 
   const columns: TableColumnsType<User> = [
-    { title: "O'quvchilar F.I.O", dataIndex: "full_name" },
+    { title: '#', render: (_, record, index) => index + 1 }, {
+      title: "O'qituvchilar F.I.O",
+      dataIndex: "full_name",
+    },
     {
       title: "Email",
       dataIndex: "email",
     },
-
-    // {
-    //   title: "Name",
-    //   dataIndex: "name",
-    //   key: "name",
-    //   render: (text) => <a>{text}</a>,
-    // },
-    // {
-    //   title: "Age",
-    //   dataIndex: "age",
-    //   key: "age",
-    // },
-    // {
-    //   title: "Address",
-    //   dataIndex: "address",
-    //   key: "address",
-    // },
-    // {
-    //   title: "Tags",
-    //   key: "tags",
-    //   dataIndex: "tags",
-    //   render: (_, { tags }) => (
-    //     <>
-    //       {tags.map((tag) => {
-    //         let color = tag.length > 5 ? "geekblue" : "green";
-    //         if (tag === "loser") {
-    //           color = "volcano";
-    //         }
-    //         return (
-    //           <Tag color={color} key={tag}>
-    //             {tag.toUpperCase()}
-    //           </Tag>
-    //         );
-    //       })}
-    //     </>
-    //   ),
-    // },
-    // {
-    //   title: "Action",
-    //   key: "action",
-    //   render: (_, record) => (
-    //     <Space size="middle">
-    //       <a>Invite {record.name}</a>
-    //       <a>Delete</a>
-    //     </Space>
-    //   ),
-    // },
+    { title: "Tug'ilgan sana", dataIndex: 'data_of_birth', render: (val) => val ? val.split('T')[0] : '-' },
+    {
+      title: 'Jinsi',
+      dataIndex: 'gender',
+      render: (val) => val === GENDER.MALE ? <p className="gender_male">O'gil bola</p> : val === GENDER.FEMALE ? <p className="gender_female">Qiz bola</p> : '-'
+    },
+    {
+      title: 'Kontakt',
+      dataIndex: 'phone_number',
+      render: (val) => val ? val : '-'
+    },
+    {
+      title: 'Imkoniyatlar',
+      render: (_, record, index) =>
+        <div className="actions_block">
+          <button className="update_btn" id={record?.user_id || ''}>
+            <img src={updateIcon} alt="o'zgartirish" />
+          </button>
+          <button className="delete_btn" id={record?.user_id || ''}>
+            <img src={deleteIcon} alt="o'chirish" />
+          </button>
+        </div>
+    }
   ];
 
   const navigateTo = () => {

@@ -1,31 +1,23 @@
 import RoleChecker from "../components/RoleChecker";
-import Dashboard from "../pages/dashboard";
-import Groups from "../pages/groups";
+import { RouteT, ROLES } from "../config";
+import Dashboard from "../pages/dashboard/dashboard";
+import CreateGroup from "../pages/groups/create-group";
+import Groups from "../pages/groups/group";
 import Logout from "../pages/logout/logout";
-import Profile from "../pages/profile";
+import Profile from "../pages/profile/profile";
 import Settings from "../pages/settings/settings";
 import CreateStudent from "../pages/students/create-student";
 import Students from "../pages/students/students";
 import CreateTeacher from "../pages/teachers/create-teachers";
 import Teachers from "../pages/teachers/teachers";
 
-export enum Roles {
-  ADMIN = "ADMIN",
-  TEACHER = "TEACHER",
-  STUDENT = "STUDENT",
-}
 
-interface RouteT {
-  index?: boolean;
-  path: string;
-  element: React.ReactNode;
-}
 export const routes: RouteT[] = [
   {
     index: true,
     path: "dashboard",
     element: (
-      <RoleChecker roles={[Roles.ADMIN, Roles.TEACHER]}>
+      <RoleChecker roles={[ROLES.ADMIN, ROLES.TEACHER]}>
         <Dashboard />
       </RoleChecker>
     ),
@@ -33,7 +25,7 @@ export const routes: RouteT[] = [
   {
     path: "students",
     element: (
-      <RoleChecker roles={[Roles.ADMIN, Roles.TEACHER]}>
+      <RoleChecker roles={[ROLES.ADMIN, ROLES.TEACHER]}>
         <Students />
       </RoleChecker>
     ),
@@ -41,7 +33,7 @@ export const routes: RouteT[] = [
   {
     path: "create-student",
     element: (
-      <RoleChecker roles={[Roles.ADMIN]}>
+      <RoleChecker roles={[ROLES.ADMIN]}>
         <CreateStudent />
       </RoleChecker>
     ),
@@ -49,7 +41,7 @@ export const routes: RouteT[] = [
   {
     path: "teachers",
     element: (
-      <RoleChecker roles={[Roles.ADMIN]}>
+      <RoleChecker roles={[ROLES.ADMIN]}>
         <Teachers />
       </RoleChecker>
     ),
@@ -57,7 +49,7 @@ export const routes: RouteT[] = [
   {
     path: "create-teacher",
     element: (
-      <RoleChecker roles={[Roles.ADMIN]}>
+      <RoleChecker roles={[ROLES.ADMIN]}>
         <CreateTeacher />
       </RoleChecker>
     ),
@@ -65,10 +57,12 @@ export const routes: RouteT[] = [
   {
     path: "groups",
     element: (
-      <RoleChecker roles={[Roles.ADMIN, Roles.TEACHER]}>
+      <RoleChecker roles={[ROLES.ADMIN, ROLES.TEACHER]}>
         <Groups />
       </RoleChecker>
     ),
+  }, {
+    path: 'create-group', element: <RoleChecker roles={[ROLES.ADMIN]}><CreateGroup /></RoleChecker>
   },
   {
     path: "profile",

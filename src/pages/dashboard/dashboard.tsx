@@ -1,17 +1,8 @@
+import { useEffect, useState } from "react";
 import { Table } from "antd";
 import type { TableColumnsType } from "antd";
-import { teacherInstance } from "../../config/axios-instance";
-import { Roles } from "../../routes";
-import { useEffect, useState } from "react";
 import EChartsReact from "echarts-for-react";
-
-export interface User {
-  user_id: string;
-  full_name: string;
-  email: string;
-  password: string;
-  role: Roles;
-}
+import { GENDER, ROLES, teacherInstance, User } from "../../config";
 
 const Dashboard = () => {
   const [teachers, setTeachers] = useState<User[]>([]);
@@ -22,7 +13,7 @@ const Dashboard = () => {
         const res = await teacherInstance.get("/user");
 
         const teachers: User[] = res.data?.data.filter(
-          (user: User) => user.role === Roles.TEACHER
+          (user: User) => user.role === ROLES.TEACHER
         );
 
         setTeachers(teachers);
@@ -34,7 +25,7 @@ const Dashboard = () => {
   }, []);
 
   const columns: TableColumnsType<User> = [
-    {
+    { title: '#', render: (_, record, index) => index + 1 }, {
       title: "O'qituvchilar F.I.O",
       dataIndex: "full_name",
     },
@@ -42,38 +33,45 @@ const Dashboard = () => {
       title: "Email",
       dataIndex: "email",
     },
+    { title: "Tug'ilgan sana", dataIndex: 'data_of_birth', render: (val) => val ? val.split('T')[0] : '-' },
+    {
+      title: 'Jinsi',
+      dataIndex: 'gender',
+      render: (val) => val === GENDER.MALE ? <p className="gender_male">O'gil bola</p> : val === GENDER.FEMALE ? <p className="gender_female">Qiz bola</p> : '-'
+    },
+    {
+      title: 'Kontakt',
+      dataIndex: 'phone_number',
+      render: (val) => val ? val : '-'
+    }
   ];
 
-  // const data = [
-  //   { type: "0-1", value: 40 },
-  //   { type: "1-2", value: 24 },
-  //   { type: "2-3", value: 12 },
-  //   { type: "3-4", value: 10 },
-  //   { type: "4-5", value: 8 },
-  //   { type: "5-6", value: 4 },
-  //   { type: "6-7", value: 2 },
-  // ];
-
-const  option = {
+  const option = {
+    // title: {
+    // text: 'A Case of Doughnut Chart',
+    //   left: 'center',
+    //   top: 'center'
+    // },
     series: [
       {
-        type: "pie",
+        type: 'pie',
         data: [
           {
             value: 335,
-            name: "Direct Visit",
+            name: 'A'
           },
           {
             value: 234,
-            name: "Union Ad",
+            name: 'B'
           },
           {
             value: 1548,
-            name: "Search Engine",
-          },
+            name: 'C'
+          }
         ],
-      },
-    ],
+        radius: ['40%', '70%']
+      }
+    ]
   };
 
   return (
@@ -113,7 +111,7 @@ const  option = {
               <p className="statistic_percentage">100%</p>
             </div>
             <div className="statistic_diagramm">
-              {/* <EChartsReact option={option}/> */}
+              <EChartsReact option={option} />
             </div>
           </div>
         </div>
