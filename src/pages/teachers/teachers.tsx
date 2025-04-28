@@ -4,8 +4,7 @@ import { Table, TableColumnsType } from "antd";
 import addIcon from "../../assets/svg/addIcon.svg";
 import updateIcon from '../../assets/svg/updateIcon.svg'
 import deleteIcon from '../../assets/svg/deleteIcon.svg'
-import { GENDER, ROLES } from "../../config/enums";
-import { teacherInstance, User } from "../../config";
+import { Gender, Roles, teacherInstance, User } from "../../config";
 
 const Teachers = () => {
   const [teachers, setTeachers] = useState<User[]>([]);
@@ -16,7 +15,7 @@ const Teachers = () => {
         const res = await teacherInstance.get("/user");
 
         const teachers: User[] = res.data?.data.filter(
-          (user: User) => user.role === ROLES.TEACHER
+          (user: User) => user.role === Roles.TEACHER
         );
 
         setTeachers(teachers);
@@ -40,7 +39,7 @@ const Teachers = () => {
     {
       title: 'Jinsi',
       dataIndex: 'gender',
-      render: (val) => val === GENDER.MALE ? <p className="gender_male">O'gil bola</p> : val === GENDER.FEMALE ? <p className="gender_female">Qiz bola</p> : '-'
+      render: (val) => val === Gender.MALE ? <p className="gender_male">O'gil bola</p> : val === Gender.FEMALE ? <p className="gender_female">Qiz bola</p> : '-'
     },
     {
       title: 'Kontakt',

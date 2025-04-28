@@ -1,5 +1,5 @@
 import RoleChecker from "../components/RoleChecker";
-import { RouteT, ROLES } from "../config";
+import { RouteT, Roles } from "../config";
 import Dashboard from "../pages/dashboard/dashboard";
 import CreateGroup from "../pages/groups/create-group";
 import Groups from "../pages/groups/group";
@@ -17,7 +17,7 @@ export const routes: RouteT[] = [
     index: true,
     path: "dashboard",
     element: (
-      <RoleChecker roles={[ROLES.ADMIN, ROLES.TEACHER]}>
+      <RoleChecker roles={[Roles.ADMIN, Roles.TEACHER]}>
         <Dashboard />
       </RoleChecker>
     ),
@@ -25,7 +25,7 @@ export const routes: RouteT[] = [
   {
     path: "students",
     element: (
-      <RoleChecker roles={[ROLES.ADMIN, ROLES.TEACHER]}>
+      <RoleChecker roles={[Roles.ADMIN, Roles.TEACHER]}>
         <Students />
       </RoleChecker>
     ),
@@ -33,7 +33,7 @@ export const routes: RouteT[] = [
   {
     path: "create-student",
     element: (
-      <RoleChecker roles={[ROLES.ADMIN]}>
+      <RoleChecker roles={[Roles.ADMIN]}>
         <CreateStudent />
       </RoleChecker>
     ),
@@ -41,7 +41,7 @@ export const routes: RouteT[] = [
   {
     path: "teachers",
     element: (
-      <RoleChecker roles={[ROLES.ADMIN]}>
+      <RoleChecker roles={[Roles.ADMIN]}>
         <Teachers />
       </RoleChecker>
     ),
@@ -49,7 +49,7 @@ export const routes: RouteT[] = [
   {
     path: "create-teacher",
     element: (
-      <RoleChecker roles={[ROLES.ADMIN]}>
+      <RoleChecker roles={[Roles.ADMIN]}>
         <CreateTeacher />
       </RoleChecker>
     ),
@@ -57,13 +57,13 @@ export const routes: RouteT[] = [
   {
     path: "groups",
     element: (
-      <RoleChecker roles={[ROLES.ADMIN, ROLES.TEACHER]}>
+      <RoleChecker roles={[Roles.ADMIN, Roles.TEACHER]}>
         <Groups />
       </RoleChecker>
     ),
   },
    {
-    path: 'create-group', element: <RoleChecker roles={[ROLES.ADMIN]}><CreateGroup /></RoleChecker>
+    path: 'create-group', element: <RoleChecker roles={[Roles.ADMIN]}><CreateGroup /></RoleChecker>
   },
   {
     path: "profile",

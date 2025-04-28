@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import updateIcon from '../../assets/svg/updateIcon.svg'
 import deleteIcon from '../../assets/svg/deleteIcon.svg'
-import { GENDER, ROLES, teacherInstance, User } from "../../config";
+import { adminInstance, Gender, Roles, User } from "../../config";
 
 const Students = () => {
   const navigate = useNavigate();
@@ -14,10 +14,10 @@ const Students = () => {
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const res = await teacherInstance.get("/user");
+        const res = await adminInstance.get("/students");
 
         const students: User[] = res.data?.data.filter(
-          (user: User) => user.role === ROLES.STUDENT
+          (user: User) => user.role === Roles.STUDENT
         );
 
         setTeachers(students);
@@ -33,15 +33,11 @@ const Students = () => {
       title: "O'qituvchilar F.I.O",
       dataIndex: "full_name",
     },
-    {
-      title: "Email",
-      dataIndex: "email",
-    },
     { title: "Tug'ilgan sana", dataIndex: 'data_of_birth', render: (val) => val ? val.split('T')[0] : '-' },
     {
       title: 'Jinsi',
       dataIndex: 'gender',
-      render: (val) => val === GENDER.MALE ? <p className="gender_male">O'gil bola</p> : val === GENDER.FEMALE ? <p className="gender_female">Qiz bola</p> : '-'
+      render: (val) => val === Gender.MALE ? <p className="gender_male">O'gil bola</p> : val === Gender.FEMALE ? <p className="gender_female">Qiz bola</p> : '-'
     },
     {
       title: 'Kontakt',

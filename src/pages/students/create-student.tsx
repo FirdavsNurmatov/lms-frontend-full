@@ -10,8 +10,10 @@ import {
 import saveIcon from "../../assets/svg/saveIcon.svg";
 import cancelIcon from "../../assets/svg/cancelIcon.svg";
 import uploadImageIcon from "../../assets/svg/uploadImageIcon.svg";
-import { useNavigate } from "react-router-dom";
-import { StudentsFieldType } from "../../config";
+import { replace, useNavigate } from "react-router-dom";
+import { adminInstance, Gender, Group, PaymentType, StudentsFieldType } from "../../config";
+import { useEffect, useState } from "react";
+import dayjs from 'dayjs'
 
 
 const CreateStudent = () => {
@@ -23,26 +25,36 @@ const CreateStudent = () => {
   };
 
   // const createStudent = useEffect(() => {
-
   // }, [])
 
-  // useEffect(() => {
-  //   const getGroups = async () => {
-  //     try {
-  //       const res = await adminInstance.get("/groups");
+  const [groups, setGroups] = useState<Group[]>([])
+  useEffect(() => {
+    const getGroups = async () => {
+      try {
+        const res = await adminInstance.get("/groups");
 
-  //       console.log(res);
+        setGroups(res?.data?.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getGroups();
+  }, [])
 
-  //       // setState(res.data?.);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   getGroups();
-  // }, [])
+  const onFinish: FormProps<StudentsFieldType>["onFinish"] = async (data) => {
+    let obj = { ...data }
+    obj.sum = +data.sum
+    obj.data_of_birth = dayjs(data.data_of_birth).format('YYYY-MM-DD')
+    // @ts-ignore
+    obj.img_url = data.img_url?.[0]?.name
 
-  const onFinish: FormProps<StudentsFieldType>["onFinish"] = (data) => {
-    console.log("creating", data);
+    const res = await adminInstance.post('/students', obj)
+
+    console.log(res?.status);
+    if (res?.status == 201) {
+
+      navigate('/app/students', { replace: true })
+    }
   };
 
   const onFinishFailed: FormProps<StudentsFieldType>["onFinishFailed"] = (data) => {
@@ -55,13 +67,17 @@ const CreateStudent = () => {
     return navigate(-1)
   }
 
+  if (!groups || groups.length === 0) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       <Form
         layout="vertical"
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
-      // wrapperCol={{ span: 18 }}
+        initialValues={{ gender: Gender.MALE, groupId: groups?.[0]?.group_id ?? null, paymentType: PaymentType.CASH }}
       >
         <div className="students_block">
           <p className="students_title">O'quvchilar jadvali</p>
@@ -80,64 +96,81 @@ const CreateStudent = () => {
         </div>
         <div className="form_create">
           <div className="first_row">
-            <Form.Item
-              label="Rasm:"
-              name="picture"
-              valuePropName="fileList"
-              getValueFromEvent={normFile}
-            >
-              <Upload
-                action="/upload.do"
-                listType="picture-card"
-                style={{ width: 150, height: 150 }}
+            <div className="upload_img">
+              <Form.Item
+                label="Rasm:"
+                name="img_url"
+                valuePropName="fileList"
+                getValueFromEvent={normFile}
+                rules={[{ required: true, message: 'Iltimos rasmingizni yuklang!' }]}
               >
-                <button
-                  className="upload_picture"
-                  style={{
-                    color: "inherit",
-                    cursor: "inherit",
-                    border: 0,
-                    background: "none",
-                  }}
-                  type="button"
+                <Upload
+                  action="/upload.do"
+                  listType="picture-card"
                 >
-                  <img src={uploadImageIcon} alt="rasm"
-                  />
-                  <div style={{ marginTop: 8 }}>Rasmni yuklang</div>
-                </button>
-              </Upload>
-            </Form.Item>
+                  <button
+                    className="upload_img_btn"
+                    type="button"
+                    style={{
+                      color: "inherit",
+                      cursor: "inherit",
+                      border: 0,
+                      background: "none",
+                    }}
+                  >
+                    <img src={uploadImageIcon} alt="rasm" />
+                    <div style={{ marginTop: 8 }}>Rasmni yuklang</div>
+                  </button>
+                </Upload>
+              </Form.Item>
+            </div>
             <div className="right_inputs">
               <div className="first_row_upper_block">
-                <Form.Item name="firstName" label="Ism:">
-                  <Input />
+                <Form.Item name="full_name" label="F.I.O:" rules={[{ required: true, message: 'Iltimos F.I.O yingizni kiriting!' }]}>
+                  <Input placeholder="Laziz Bekmirzayev Azamovich" />
                 </Form.Item>
-                <Form.Item name="secondName" label="Familiya:">
-                  <Input />
+                <Form.Item name="username" label="Username:" rules={[{ required: true, message: 'Iltimos username kiriting!' }]}>
+                  <Input placeholder="Laziz007" />
                 </Form.Item>
-                <Form.Item name="thirdName" label="Sharfi:">
-                  <Input />
+                <Form.Item name="password" label="Parol:" rules={[{ required: true, message: 'Iltimos parol kiriting!' }]}>
+                  <Input placeholder="Killer$%02" />
                 </Form.Item>
               </div>
               <div className="first_row_bottom_block">
-                <Form.Item name="birth_date" label="Tug'ilgan sana:">
+                <Form.Item name="data_of_birth" label="Tug'ilgan sana:" rules={[{ required: true, message: "Iltimos tug'ilgan kuningizni tanlang!" }]}>
                   <DatePicker />
                 </Form.Item>
                 <Form.Item name="gender" label="Jinsi:">
                   <Select>
-                    <Select.Option value="male" >O'gil bola</Select.Option>
-                    <Select.Option value="female">Qiz bola</Select.Option>
+                    <Select.Option value={Gender.MALE} >O'gil bola</Select.Option>
+                    <Select.Option value={Gender.FEMALE}>Qiz bola</Select.Option>
                   </Select>
                 </Form.Item>
-                <Form.Item name="address" label="Yashash manzili:">
-                  <Input />
+                <Form.Item name="address" label="Yashash manzili:" rules={[{ required: true, message: 'Iltimos yashash manzilinigizni kiriting!' }]}>
+                  <Input placeholder="Toshkent, Qibray, Bunyodkor mahallaai, 45-uy" />
                 </Form.Item>
               </div>
             </div>
           </div>
           <div className="second_row">
-            <Form.Item name="phoneNumber" label="Telefon:">
-              <Input />
+            <Form.Item name="groupId" label="Guruhlar:">
+              <Select>
+                {groups ? groups.map((val) => <Select.Option value={val.group_id}>{val.name}</Select.Option>) : null}
+              </Select>
+            </Form.Item>
+            <Form.Item name="paymentType" label="To'lov turi:">
+              <Select>
+                <Select.Option value={PaymentType.CASH}>Naqd</Select.Option>
+                <Select.Option value={PaymentType.CREDIT_CARD}>Karta</Select.Option>
+              </Select>
+            </Form.Item>
+            <Form.Item name="sum" label="Summa:" rules={[{ required: true, message: 'Iltimos summani kiriting!' }, {
+              pattern: /^(0|[1-9]\d*)$/, message: "Bosh raqami 0 bilan boshlanmaydigan raqam kiriting!"
+            },]}>
+              <Input placeholder="1000" />
+            </Form.Item>
+            <Form.Item name="phone_number" label="Telefon raqami:" rules={[{ required: true, message: 'Iltimos telefon raqamini kiriting!' }, { pattern: /^\+998[0-9]{9}$/, message: "Oxirigacha kiriting yoki mavjud bo'lmagan telefon raqam!" },]}>
+              <Input placeholder="+998991234567" />
             </Form.Item>
           </div>
         </div>

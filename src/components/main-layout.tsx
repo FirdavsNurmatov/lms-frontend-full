@@ -23,7 +23,7 @@ const MainLayout = () => {
   };
 
   return (
-    <Layout style={{ height: "100vh", width: "100vw" }}>
+    <Layout style={{ height: "100dvh", width: "100dvw" }}>
       <Sider className="slider_menu">
         <div className="menus">
           <div>

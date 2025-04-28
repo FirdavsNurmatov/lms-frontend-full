@@ -11,7 +11,8 @@ import saveIcon from "../../assets/svg/saveIcon.svg";
 import cancelIcon from "../../assets/svg/cancelIcon.svg";
 import uploadImageIcon from "../../assets/svg/uploadImageIcon.svg";
 import { useNavigate } from "react-router-dom";
-import { TeacherFieldType } from "../../config";
+import { adminInstance, TeacherFieldType } from "../../config";
+import { useEffect } from "react";
 
 
 const CreateTeacher = () => {
@@ -22,23 +23,19 @@ const CreateTeacher = () => {
         return e?.fileList;
     };
 
-    // const createTeacher = useEffect(() => {
-    // }, [])
+    useEffect(() => {
+        const getGroups = async () => {
+            try {
+                const res = await adminInstance.get("/groups");
 
-    // useEffect(() => {
-    //     const getGroups = async () => {
-    //         try {
-    //             const res = await adminInstance.get("/groups");
+                console.log(res);
 
-    //             console.log(res);
-
-    //             // setState(res.data?.);
-    //         } catch (error) {
-    //             console.log(error);
-    //         }
-    //     };
-    //     getGroups();
-    // }, [])
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getGroups();
+    }, [])
 
     const onFinish: FormProps<TeacherFieldType>["onFinish"] = (data) => {
         console.log("creating", data);
@@ -60,7 +57,6 @@ const CreateTeacher = () => {
                 layout="vertical"
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
-            // wrapperCol={{ span: 18 }}
             >
                 <div className="students_block">
                     <p className="students_title">O'qituvchilar jadvali</p>
