@@ -1,5 +1,7 @@
+import React from "react";
 import { Layout, Menu } from "antd";
 import { NavLink, Outlet } from "react-router-dom";
+import { useAuthStore } from "../store/useAuthStore";
 import logoSvg from "../assets/svg/logo.svg";
 import dashboardIcon from "../assets/svg/dashboardIcon.svg";
 import studentsIcon from "../assets/svg/studentsIcon.svg";
@@ -8,9 +10,7 @@ import groupsIcon from "../assets/svg/groupsIcon.svg";
 import settingsIcon from "../assets/svg/settingsIcon.svg";
 import logoutIcon from "../assets/svg/logoutIcon.svg";
 import searchIcon from "../assets/svg/searchIcon.svg";
-import React from "react";
 import profileIcon from "../assets/svg/profileIcon.svg";
-import { useAuthStore } from "../store/useAuthStore";
 
 const MainLayout = () => {
   const { Header, Sider, Content } = Layout;

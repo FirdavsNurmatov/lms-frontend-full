@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Table } from "antd";
 import type { TableColumnsType } from "antd";
 import EChartsReact from "echarts-for-react";
-import { Gender, Roles, teacherInstance, User } from "../../config";
+import { adminInstance, Gender, User } from "../../config";
 
 const Dashboard = () => {
   const [teachers, setTeachers] = useState<User[]>([]);
@@ -10,11 +10,9 @@ const Dashboard = () => {
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const res = await teacherInstance.get("/user");
+        const res = await adminInstance.get("/teacher");
 
-        const teachers: User[] = res.data?.data.filter(
-          (user: User) => user.role === Roles.TEACHER
-        );
+        const teachers: User[] = res.data?.data
 
         setTeachers(teachers);
       } catch (error) {
@@ -28,10 +26,6 @@ const Dashboard = () => {
     { title: '#', render: (_, record, index) => index + 1 }, {
       title: "O'qituvchilar F.I.O",
       dataIndex: "full_name",
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
     },
     { title: "Tug'ilgan sana", dataIndex: 'data_of_birth', render: (val) => val ? val.split('T')[0] : '-' },
     {
@@ -78,7 +72,7 @@ const Dashboard = () => {
         <div>
           <div className="top_block">
             <p className="top_block__title">
-              O'qituvhilar soni: {teachers.length} ta
+              O'qituvchilar soni: {teachers.length} ta
             </p>
           </div>
           <Table<User>

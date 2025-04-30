@@ -4,7 +4,8 @@ import { Table, TableColumnsType } from "antd";
 import addIcon from "../../assets/svg/addIcon.svg";
 import updateIcon from '../../assets/svg/updateIcon.svg'
 import deleteIcon from '../../assets/svg/deleteIcon.svg'
-import { Gender, Roles, teacherInstance, User } from "../../config";
+import { adminInstance, Gender, Roles, User } from "../../config";
+import UpdateTeacher from "./update-teacher";
 
 const Teachers = () => {
   const [teachers, setTeachers] = useState<User[]>([]);
@@ -12,11 +13,9 @@ const Teachers = () => {
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const res = await teacherInstance.get("/user");
+        const res = await adminInstance.get("/teacher");
 
-        const teachers: User[] = res.data?.data.filter(
-          (user: User) => user.role === Roles.TEACHER
-        );
+        const teachers: User[] = res.data?.data
 
         setTeachers(teachers);
       } catch (error) {
@@ -30,10 +29,6 @@ const Teachers = () => {
     { title: '#', render: (_, record, index) => index + 1 }, {
       title: "O'qituvchilar F.I.O",
       dataIndex: "full_name",
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
     },
     { title: "Tug'ilgan sana", dataIndex: 'data_of_birth', render: (val) => val ? val.split('T')[0] : '-' },
     {
@@ -50,9 +45,7 @@ const Teachers = () => {
       title: 'Imkoniyatlar',
       render: (_, record, index) =>
         <div className="actions_block">
-          <button className="update_btn" id={record?.user_id || ''}>
-            <img src={updateIcon} alt="o'zgartirish" />
-          </button>
+          <UpdateTeacher icon={updateIcon} userData={record} />
           <button className="delete_btn" id={record?.user_id || ''}>
             <img src={deleteIcon} alt="o'chirish" />
           </button>

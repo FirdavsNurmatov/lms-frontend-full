@@ -2,18 +2,13 @@ import { useAuthStore } from "../../store/useAuthStore";
 import { Button, Form, FormProps, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 import { adminInstance, LoginFieldType } from "../../config";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import Cookies from "js-cookie";
+
 
 const Login = () => {
   const navigate = useNavigate();
   const { setUser, setToken, token } = useAuthStore((store) => store);
-  useEffect(
-    () => {
-      if (token) {
-        navigate("/app/dashboard", { replace: true });
-      }
-    }, [token]
-  )
 
   const [error, setError] = useState('')
 
@@ -25,10 +20,20 @@ const Login = () => {
           username: username,
           password: password,
         });
+
         setUser(res.data.user);
         setToken(res.data.data.accessToken);
 
-        navigate("/dashboard", { replace: true });
+
+        const accessToken = res?.data?.data?.accessToken
+        const accessTokenTime = res?.data?.data?.access_token_expire
+        Cookies.set('accessToken', accessToken, { secure: true, sameSite: 'strict', expires: +accessTokenTime })
+
+        const refreshToken = res?.data?.data?.refreshToken
+        const refreshTokenTime = res?.data?.data?.refresh_token_expire
+        Cookies.set('refreshToken', refreshToken, { secure: true, sameSite: 'strict', expires: +refreshTokenTime })
+
+        navigate("/app/dashboard", { replace: true });
       } catch (err) {
         setError('Username yoki parol xato!')
       }

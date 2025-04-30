@@ -1,16 +1,16 @@
-import { GENDER, ROLES, STATUS } from "./enums";
+import { Gender, Roles, Status } from "./enums";
 
 export interface User {
   user_id: string;
   address: string;
   data_of_birth: string;
-  gender: GENDER;
+  gender: Gender;
   phone_number: string;
   username: string;
   full_name: string;
-  email: string;
+  email?: string;
   password: string;
-  role: ROLES;
+  role: Roles;
 }
 
 export interface RouteT {
@@ -24,7 +24,7 @@ export interface Course {
   name: string;
   description: string;
   duration: number;
-  status: STATUS.ACTIVE | string;
+  status: Status.ACTIVE | string;
 }
 
 export interface Group {
@@ -51,4 +51,11 @@ export interface UserT {
   username?: string;
   role?: string;
   user_id?: string;
+}
+
+export interface UpdateStudentModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  student: User;
+  onStudentEdited: () => void;
 }

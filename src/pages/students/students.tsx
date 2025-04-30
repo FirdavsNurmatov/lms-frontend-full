@@ -6,10 +6,11 @@ import { useNavigate } from "react-router-dom";
 import updateIcon from '../../assets/svg/updateIcon.svg'
 import deleteIcon from '../../assets/svg/deleteIcon.svg'
 import { adminInstance, Gender, Roles, User } from "../../config";
+import UpdateStudent from "./update-student-modal";
 
 const Students = () => {
   const navigate = useNavigate();
-  const [students, setTeachers] = useState<User[]>([]);
+  const [students, setStudents] = useState<User[]>([]);
 
   useEffect(() => {
     const getUsers = async () => {
@@ -20,7 +21,7 @@ const Students = () => {
           (user: User) => user.role === Roles.STUDENT
         );
 
-        setTeachers(students);
+        setStudents(students);
       } catch (error) {
         console.log(error);
       }
@@ -46,12 +47,13 @@ const Students = () => {
     },
     {
       title: 'Imkoniyatlar',
-      render: (_, record, index) =>
+      render: (val, record) =>
         <div className="actions_block">
-          <button className="update_btn" id={record?.user_id || ''}>
+          {/* <button onClick={() => updateStudent(record?.user_id)} className="update_btn" id={record?.user_id || ''}>
             <img src={updateIcon} alt="o'zgartirish" />
-          </button>
-          <button className="delete_btn" id={record?.user_id || ''}>
+          </button> */}
+          <UpdateStudent icon={updateIcon} userData={record} />
+          <button onClick={() => deleteStudent(record?.user_id)} className="delete_btn" id={record?.user_id || ''}>
             <img src={deleteIcon} alt="o'chirish" />
           </button>
         </div>
@@ -61,6 +63,23 @@ const Students = () => {
   const navigateTo = () => {
     return navigate("/app/create-student");
   };
+
+  // const updateStudent = async (id: string) => {
+  //   try {
+  //     console.log("student id: " + id);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  const deleteStudent = async (id: string) => {
+    try {
+      console.log('student id: ' + id);
+      const res = await adminInstance.delete('/students/' + id)
+    } catch (error) {
+      console.log('Error chiqdi', error);
+    }
+  }
 
   return (
     <div>

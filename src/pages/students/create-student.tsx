@@ -10,10 +10,12 @@ import {
 import saveIcon from "../../assets/svg/saveIcon.svg";
 import cancelIcon from "../../assets/svg/cancelIcon.svg";
 import uploadImageIcon from "../../assets/svg/uploadImageIcon.svg";
-import { replace, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { adminInstance, Gender, Group, PaymentType, StudentsFieldType } from "../../config";
 import { useEffect, useState } from "react";
 import dayjs from 'dayjs'
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const CreateStudent = () => {
@@ -41,19 +43,29 @@ const CreateStudent = () => {
     getGroups();
   }, [])
 
+
   const onFinish: FormProps<StudentsFieldType>["onFinish"] = async (data) => {
-    let obj = { ...data }
-    obj.sum = +data.sum
-    obj.data_of_birth = dayjs(data.data_of_birth).format('YYYY-MM-DD')
-    // @ts-ignore
-    obj.img_url = data.img_url?.[0]?.name
+    try {
+      let obj = { ...data }
+      obj.sum = +data.sum
+      obj.data_of_birth = dayjs(data.data_of_birth).format('YYYY-MM-DD')
+      // @ts-ignore
+      obj.img_url = data.img_url?.[0]?.name
 
-    const res = await adminInstance.post('/students', obj)
+      toast.loading('Yaratilmoqda...', { autoClose: 3000 })
+      const res = await adminInstance.post('/students', obj)
 
-    console.log(res?.status);
-    if (res?.status == 201) {
-
-      navigate('/app/students', { replace: true })
+      if (res?.status == 201) {
+        toast.success("O'qituvchi muvaffaqiyatli yaratildi")
+        setTimeout(() => {
+          navigate('/app/students', { replace: true })
+        }, 3000);
+      } else {
+        toast.error("Xatolik yuz berdi. Iltimos, qayta urinib ko‘ring.");
+      }
+    } catch (error) {
+      toast.error("Server bilan bog‘lanishda xatolik.");
+      console.error(error);
     }
   };
 
@@ -73,6 +85,7 @@ const CreateStudent = () => {
 
   return (
     <>
+      <ToastContainer position="top-right" autoClose={3000} />
       <Form
         layout="vertical"
         onFinish={onFinish}
@@ -132,7 +145,18 @@ const CreateStudent = () => {
                 <Form.Item name="username" label="Username:" rules={[{ required: true, message: 'Iltimos username kiriting!' }]}>
                   <Input placeholder="Laziz007" />
                 </Form.Item>
-                <Form.Item name="password" label="Parol:" rules={[{ required: true, message: 'Iltimos parol kiriting!' }]}>
+                <Form.Item name="password" label="Parol:" rules={[{ required: true, message: 'Iltimos parol kiriting!' }, {
+                  validator: (_, value) => {
+                    if (!value) return Promise.resolve();
+
+                    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+                    return strongPasswordRegex.test(value)
+                      ? Promise.resolve()
+                      : Promise.reject(
+                        new Error('Parol kamida 8 ta belgidan iborat bo‘lishi, katta harf, kichik harf, raqam va maxsus belgi o‘z ichiga olishi kerak.')
+                      );
+                  },
+                }]}>
                   <Input placeholder="Killer$%02" />
                 </Form.Item>
               </div>
@@ -155,7 +179,7 @@ const CreateStudent = () => {
           <div className="second_row">
             <Form.Item name="groupId" label="Guruhlar:">
               <Select>
-                {groups ? groups.map((val) => <Select.Option value={val.group_id}>{val.name}</Select.Option>) : null}
+                {groups ? groups.map((val) => <Select.Option key={val.group_id} value={val.group_id}>{val.name}</Select.Option>) : null}
               </Select>
             </Form.Item>
             <Form.Item name="paymentType" label="To'lov turi:">

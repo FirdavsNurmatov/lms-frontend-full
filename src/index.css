@@ -263,3 +263,8 @@ button {
     font-size: 16px;
     font-weight: 600;
 }
+
+.cancel_btn, .save_btn{
+    font-size: 16px;
+    padding: 4px;
+}
