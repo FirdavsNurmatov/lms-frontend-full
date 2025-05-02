@@ -4,7 +4,7 @@ import Cookie from "js-cookie";
 
 // Admin
 export const adminInstance = axios.create({
-  baseURL: "http://13.233.2.40:4000/api/v1",
+  baseURL: "https://api.admin.bekzodjon.uz/api/v1",
   // withCredentials: true,
 });
 
